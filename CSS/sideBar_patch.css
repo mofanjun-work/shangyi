@@ -1,0 +1,161 @@
+/*
+	FormSideBar
+*/
+body ~ form {
+	position:relative;
+}
+
+.Body_SizeBox .Form_SideBar {
+	position: absolute;
+	right:30px;
+	top:20px;
+	width:425px;
+	height: 90%;
+	overflow: hidden;
+	background: rgba(255,0,0,0.2);
+}
+
+#Form_SideBar_Center {
+	padding: 0;
+}
+
+/*
+	Search
+*/
+#search_container {
+	width: 100%;
+	height: 40px;
+}
+
+#search_box {
+	float: left;
+	width:368px ;
+	height:38px;
+	border:none;
+	box-shadow: 1px 1px 2px #888888;
+	background-color: white;
+}
+
+#search_box input {
+	float: left;
+	width:331px ;
+	height:38px;
+	padding-left: 10px;
+	border:none;
+
+}
+
+#search_box button{
+	float: left;
+	width: 27px;
+	height: 38px;
+
+	display:none;
+	border: none;
+	background:url('../Images/sidebar_icon.png') 0 -113px;
+	background-color:white;
+}
+
+#btn_search{
+	float: left;
+	border: none;
+	box-shadow: 2px 2px 2px #888888;
+	width: 57px;
+	height: 39px;
+	background: url('../Images/sidebar_icon.png') -5px -75px;
+	background-color: blue;
+}
+
+/*
+	toast
+*/
+#toast_wrapper {
+	width: 368px;
+	z-index: 1000;
+
+	position: absolute;
+	left: 0;
+	top: 40px;
+}
+
+#toast_wrapper li{
+	padding-bottom: 8px;
+	padding-top: 8px;
+	background-color: #FCFCFC;
+}
+
+#toast_wrapper li:hover{
+	background-color: #F2F2F2;
+}
+
+#toast_wrapper li div{
+	background:url('../Images/suggestion_icon.png') 0 -12px;
+	background-repeat: no-repeat;
+
+	height: 17px;
+	margin-left: 10px;
+}
+
+#toast_wrapper li div span:nth-child(1){
+	display: inline-block;
+	padding-left: 30px;
+}
+
+#toast_wrapper li div span:nth-child(2){
+	display: inline-block;
+	padding-left: 20px;
+	color:	#8B8B7A;
+}
+
+
+/*
+	main nav > sub nav > entry list
+*/
+#list_container {
+	width: 100%;
+	height: auto;
+}
+
+.mainnav {
+	background-color: white;
+	padding-top: 10px;
+}
+
+.subnav {
+	background-color: white;
+	margin-top: 0;
+	padding-top: 10px;
+}
+
+.serverpart_expand {
+	background-color:#FFFFF0;
+
+}
+
+.serverpart_expand li {
+	height: 15px;
+}
+
+.entrylist {
+	display: none;
+
+	background-color: white;
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 690px;
+}
+
+/*
+	ex
+*/
+#another_list_container {
+	position: absolute;
+	left: 0;
+	top: 40px;
+
+	display: none;
+	background-color: white;
+
+	width: 100%;
+	height: auto;
+}
