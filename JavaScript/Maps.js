@@ -255,6 +255,7 @@
                                 $(this).css("backgroundColor", "");
                             });
                         map.clearOverlays();
+
                         arrayMaker = new Array();
                         $("#serverpart_contain li").each(function (i) {
                             var data = i % 2;
@@ -310,7 +311,7 @@
                             markerArr = [JSON.stringify(arrayobjectback[num])];
                             addMarker();
                         }
-                        markerArr = json_parse(rs);//[];
+                        //markerArr = json_parse(rs);//[];
 
                     }
                 } catch (e) {
@@ -386,6 +387,12 @@
         function SetMapPoint(e)
         {
             map.clearOverlays();
+            /*
+            *TODO:因为clearOverlays会把自定义覆盖物清除,
+                但是marker后addoverlayer会使maker消失 
+                所以放在这里 寻找更好的方案....
+            */
+            map.addOverlay(g_pop);
             arrayMaker = new Array();
             //获得服务区列表
             var callparam = "action_type=getServerPartByType&action_data=" + e;
@@ -462,7 +469,7 @@
                             addMarker();
                         }
                         //markerArr = json_parse(rs);//[];
-                       
+                       renderPop(arrayobjectback);
                     }
                 } catch (e) {
                     alert(e.message);
@@ -528,6 +535,9 @@
                 map.centerAndZoom(point, 8);
             }
             window.map = map;
+            //map_step1:create map overlay
+            g_pop = new ScrollTextOverlay();  
+            map.addOverlay(g_pop);
         }
         //设置事件
         function SetMapEvent() {
@@ -878,6 +888,7 @@
         };
         /*data opration*/
         var g_json;
+        var g_pop;//泡泡气窗句柄
         function parseData(rs){
             var dd = JSON.stringify(rs);
             var json = json_parse(rs);
@@ -939,7 +950,23 @@
                 addMarker();
             }
         }
-
+        //@Function:解析服务端数据 并且显示第一个地址的气泡框
+        function renderPop(arrayobjectback){
+            var pop_points = [];
+            for (var num = 0; num < arrayobjectback.length; num++) {
+                markerArr = [JSON.stringify(arrayobjectback[num])];
+                var json = markerArr[0];
+                json = eval('(' + json + ')');
+                var p0 = json.point.split("|")[0];
+                var p1 = json.point.split("|")[1];
+                var imagepath = json.imagepath;
+                var point = new BMap.Point(p0, p1);
+                pop_points.push(point);
+            }
+            //window.map.addOverlay(g_pop);
+            g_pop.setPosition(pop_points[0]);
+        }
+        //Event
         function stopBubble(e) { 
             //如果提供了事件对象，则这是一个非IE浏览器 
             if ( e && e.stopPropagation ) 
