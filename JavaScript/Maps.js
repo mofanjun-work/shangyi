@@ -962,6 +962,7 @@
 
         function renderPop(arrayobjectback){
             var pop_points = [];
+            g_pop_timeHandler = null;//有新的绘制需求后 将句柄置空
             for (var num = 0; num < arrayobjectback.length; num++) {
                 markerArr = [JSON.stringify(arrayobjectback[num])];
                 var json = markerArr[0];
@@ -972,16 +973,16 @@
                 var point = new BMap.Point(p0, p1);
                 pop_points.push(point);
             }
-            var index = 0;
+            var min = 0,max = arrayobjectback.length;
             var callBack = function(){
-                if (index > arrayobjectback.length) {
-                    index = 0;
+                var displayIndex = Math.floor(Math.random()*(max-min+1)+min);
+                g_pop.switchlonAndLat(pop_points[displayIndex]);
+                //句柄未置空 继续执行延迟函数
+                if (g_pop_timeHandler !== null) {
+                    g_pop_timeHandler = setTimeout(callBack,15000);
                 }
-                g_pop.switchlonAndLat(pop_points[index]);
-                index++;
-                g_pop_timeHandler = setTimeout(callBack,15000);
             };
-            g_pop_timeHandler = setTimeout(callBack,3000);
+            g_pop_timeHandler = setTimeout(callBack,2000);
         }
         //Event
         function stopBubble(e) { 
