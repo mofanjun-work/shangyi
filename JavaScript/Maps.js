@@ -255,7 +255,8 @@
                                 $(this).css("backgroundColor", "");
                             });
                         map.clearOverlays();
-
+                        //map_step3:
+                        map.addOverlay(g_pop);
                         arrayMaker = new Array();
                         $("#serverpart_contain li").each(function (i) {
                             var data = i % 2;
@@ -392,6 +393,7 @@
                 但是marker后addoverlayer会使maker消失 
                 所以放在这里 寻找更好的方案....
             */
+            //map_step2:
             map.addOverlay(g_pop);
             arrayMaker = new Array();
             //获得服务区列表
@@ -469,6 +471,7 @@
                             addMarker();
                         }
                         //markerArr = json_parse(rs);//[];
+                        //map_step4:
                        renderPop(arrayobjectback);
                     }
                 } catch (e) {
@@ -951,6 +954,12 @@
             }
         }
         //@Function:解析服务端数据 并且显示第一个地址的气泡框
+        var g_pop_timeHandler = null;
+        function renderOnePop(){
+            console.log('123');
+            g_pop_timeHandler = setTimeout(renderOnePop,2000);
+        }
+
         function renderPop(arrayobjectback){
             var pop_points = [];
             for (var num = 0; num < arrayobjectback.length; num++) {
@@ -963,8 +972,16 @@
                 var point = new BMap.Point(p0, p1);
                 pop_points.push(point);
             }
-            //window.map.addOverlay(g_pop);
-            g_pop.setPosition(pop_points[0]);
+            var index = 0;
+            var callBack = function(){
+                if (index > arrayobjectback.length) {
+                    index = 0;
+                }
+                g_pop.switchlonAndLat(pop_points[index]);
+                index++;
+                g_pop_timeHandler = setTimeout(callBack,15000);
+            };
+            g_pop_timeHandler = setTimeout(callBack,3000);
         }
         //Event
         function stopBubble(e) { 

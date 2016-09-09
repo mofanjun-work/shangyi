@@ -9,12 +9,12 @@
 
 .pop_show {
 	animation-name: slowShow;
-	animation-duration: 3s;
+	animation-duration: 1.5s;
 }
 
 .pop_hide {
 	animation-name: slowHide;
-	animation-duration: 3s;
+	animation-duration: 1.5s;
 }
 
 /*

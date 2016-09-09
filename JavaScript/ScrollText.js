@@ -36,12 +36,6 @@ Scroll.prototype.stop = function(){
     this.timerHandle = null;
 }
 
-// var sc = new Scroll(document.getElementById("scroll"));  
-// document.getElementById('pop').addEventListener('animationend', function(event){
-//     if (event.animationName === 'slowShow') {
-//         //泡泡框显示回调
-//         sc.run();
-//     }else if(event.animationName === 'slowHide'){
-//         //泡泡框消失回调
-//     }
-// },false); 
+Scroll.prototype.setContent = function(){
+    
+}
