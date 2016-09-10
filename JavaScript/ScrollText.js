@@ -32,10 +32,15 @@ Scroll.prototype.run = function(){
 };
 
 Scroll.prototype.stop = function(){
-    clearInterval(this.timerHandle);
-    this.timerHandle = null;
+    if (this.timerHandle) {
+        clearInterval(this.timerHandle);
+        this.timerHandle = null;
+    }
 }
 
-Scroll.prototype.setContent = function(){
-    
+Scroll.prototype.setContent = function(text){
+    var tpl = document.getElementById('yp_text');
+    var tpl_copy = document.getElementById('yp_text_copy');
+    tpl.innerHTML = text;
+    tpl_copy.innerHTML = text;
 }

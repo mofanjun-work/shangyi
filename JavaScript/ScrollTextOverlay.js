@@ -1,5 +1,5 @@
 // 定义自定义覆盖物的构造函数  
-function ScrollTextOverlay(sellData){ 
+function ScrollTextOverlay(){ 
 	this.pop_map_position = null;//当前显示的经度纬度数据
 }  
 // 继承API的BMap.Overlay  
@@ -37,7 +37,7 @@ ScrollTextOverlay.prototype.initialize = function(map){
 /*
 	主动绘制和被动绘制
 */
-ScrollTextOverlay.prototype.switchlonAndLat =function(point){
+ScrollTextOverlay.prototype.switchDraw =function(point){
 	this.pop_map_position = point;
 	//
 	this.stop();
@@ -85,3 +85,14 @@ ScrollTextOverlay.prototype.setPosition = function(mapPoint){
 	this._div.style.left = position.x - this.pop_width / 2 + "px";  
 	this._div.style.top = position.y - this.pop_height - this.pop_arrowHeight  + "px";  
 }
+
+//@comment 都是6位小数所以不显示 所以不toFixed()修改精度
+ScrollTextOverlay.prototype.isDisplay = function(point){
+	return (this.pop_map_position.lat == point.lat && this.pop_map_position.lng == point.lng) ? true:false;
+}
+
+//@comment 设置显示文字
+ScrollTextOverlay.prototype.setText = function(text){
+	Scroll.prototype.setContent(text);
+}
+

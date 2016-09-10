@@ -541,6 +541,7 @@
             //map_step1:create map overlay
             g_pop = new ScrollTextOverlay();  
             map.addOverlay(g_pop);
+            // g_pop.setText('萧山服务区卖出了一台电脑|RMB:9999');
         }
         //设置事件
         function SetMapEvent() {
@@ -618,6 +619,10 @@
 
                     _marker.addEventListener("click", function () {
                         _iw = createInfoWindow(this.z.title);
+                        var point = this.z.point;
+                        if(g_pop.isDisplay(point)){
+                            g_pop.stop();
+                        }
                         this.openInfoWindow(_iw);
                         RetSetState();
                     });
@@ -712,7 +717,11 @@
         //点击的时候，将点击的按钮，变换成红色
         function RetSetMapPoint(pointX, pointY) {
             //设置中心点
+            //map_step5:
             var point = new BMap.Point(pointX, pointY);
+            if (g_pop.isDisplay(point)) {
+                g_pop.stop();
+            }
             map.centerAndZoom(point, 10);
             //重新设置--如果跟点击的X 与Y相等，则红色表示
             for (var i = 0 ; i < arrayMaker.length; i++) {
@@ -952,17 +961,19 @@
                 markerArr = [JSON.stringify(arrayobjectback[num])];
                 addMarker();
             }
+            renderPop(arrayobjectback);
         }
         //@Function:解析服务端数据 并且显示第一个地址的气泡框
         var g_pop_timeHandler = null;
-        function renderOnePop(){
-            console.log('123');
-            g_pop_timeHandler = setTimeout(renderOnePop,2000);
-        }
-
         function renderPop(arrayobjectback){
             var pop_points = [];
-            g_pop_timeHandler = null;//有新的绘制需求后 将句柄置空
+            //有新的绘制需求后 将句柄置空来停止轮询
+            g_pop_timeHandler = null;
+            //如果只有一个服务站将不显示气泡
+            if (arrayobjectback.length == 1) {
+                return;
+            }
+
             for (var num = 0; num < arrayobjectback.length; num++) {
                 markerArr = [JSON.stringify(arrayobjectback[num])];
                 var json = markerArr[0];
@@ -976,7 +987,7 @@
             var min = 0,max = arrayobjectback.length;
             var callBack = function(){
                 var displayIndex = Math.floor(Math.random()*(max-min+1)+min);
-                g_pop.switchlonAndLat(pop_points[displayIndex]);
+                g_pop.switchDraw(pop_points[displayIndex]);
                 //句柄未置空 继续执行延迟函数
                 if (g_pop_timeHandler !== null) {
                     g_pop_timeHandler = setTimeout(callBack,15000);
@@ -1003,6 +1014,28 @@
             else 
                 window.event.returnValue = false; 
             return false; 
+        }
+
+        //TODO:分离name和pos 提高复用性
+        function getServerData(){
+          if (g_pre_search_value !== g_DOMHandler.input.value) {
+                g_pre_search_value = g_DOMHandler.input.value;
+                search.getSearchServerPart(g_DOMHandler.input.value,function(fs){
+                    if (!fs) {
+                        console.log('btnSearch error!');
+                        return;
+                    }
+                    var fs = parseData(fs);
+                    showContainer('another_list_container',true,g_json);
+                });
+
+                search.getServerPosByName(g_DOMHandler.input.value,function(rs){
+                    pointMap(rs);
+                });
+
+                cancelAnimationFrame(g_animationHandler);
+                g_animationHandler = null;
+            }
         }
 
         /*
@@ -1137,27 +1170,12 @@
 
             g_DOMHandler.input.addEventListener('keydown',function(event){
                 if (event.keyCode === 13) {
-                    if (g_pre_search_value !== g_DOMHandler.input.value) {
-                        g_pre_search_value = g_DOMHandler.input.value;
-                        search.getSearchServerPart(g_DOMHandler.input.value,function(fs){
-                            if (!fs) {
-                                console.log('keydown error!');
-                                return;
-                            }
-                            var fs = parseData(fs);
-                            showContainer('another_list_container',true,g_json);
-                        });
-
-                        search.getServerPosByName(g_DOMHandler.input.value,function(rs){
-                            pointMap(rs);
-                        });
-                        cancelAnimationFrame(g_animationHandler);
-                        g_animationHandler = null;
-                    }
-                    g_DOMHandler.toastWrapper.innerHTML = "";
-                    stopBubble(event);
-                    stopDefault(event);
+                    getServerData();
                 }
+                g_DOMHandler.toastWrapper.innerHTML = "";
+                stopBubble(event);
+                stopDefault(event);
+                
             },false);
             //TODO:remove jquery method
             $("#search").bind('input propertychange',function(){
@@ -1186,24 +1204,7 @@
             },false);
 
             g_DOMHandler.btnSearch.addEventListener('click',function(event){
-                if (g_pre_search_value !== g_DOMHandler.input.value) {
-                    g_pre_search_value = g_DOMHandler.input.value;
-                    search.getSearchServerPart(g_DOMHandler.input.value,function(fs){
-                        if (!fs) {
-                            console.log('btnSearch error!');
-                            return;
-                        }
-                        var fs = parseData(fs);
-                        showContainer('another_list_container',true,g_json);
-                    });
-
-                    search.getServerPosByName(g_DOMHandler.input.value,function(rs){
-                        pointMap(rs);
-                    });
-
-                    cancelAnimationFrame(g_animationHandler);
-                    g_animationHandler = null;
-                }
+                getServerData();
                 g_DOMHandler.toastWrapper.innerHTML = "";
                 stopBubble(event);
                 stopDefault(event);
@@ -1233,6 +1234,9 @@
                     }
                 }
                 showContainer('another_list_container',true,json);
+                search.getServerPosByName(g_json.SERVERPART[i].SERVERPART_NAME,function(rs){
+                    pointMap(rs);
+                });
             },false);
             //init UI
             floatSideBar();
