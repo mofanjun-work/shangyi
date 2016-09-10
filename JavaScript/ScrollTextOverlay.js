@@ -1,18 +1,20 @@
 // 定义自定义覆盖物的构造函数  
 function ScrollTextOverlay(){ 
 	this.pop_map_position = null;//当前显示的经度纬度数据
+	this.pop_display = null;
+	
 }  
 // 继承API的BMap.Overlay  
 ScrollTextOverlay.prototype = new BMap.Overlay(); 
 
 // 实现初始化方法 
 ScrollTextOverlay.prototype.initialize = function(map){  
-	// 保存map对象实例  
+	// 保存map对象实例 
 	 this._map = map;      
 	 map.getPanes().markerPane.innerHTML = g_html_fragment.scroll;
 	 var div = document.getElementById("pop");  
 	 //
-	 this._scroll =  new Scroll(this.displayText);
+	 this._scroll =  new Scroll();
 	 var that = this
 	 document.getElementById('pop').addEventListener('animationend', function(event){
     	if (event.animationName === 'slowShow') {
@@ -37,9 +39,11 @@ ScrollTextOverlay.prototype.initialize = function(map){
 /*
 	主动绘制和被动绘制
 */
-ScrollTextOverlay.prototype.switchDraw =function(point){
-	this.pop_map_position = point;
+ScrollTextOverlay.prototype.switchDraw =function(item){
+	this.pop_map_position = item.point;
+	this.pop_display = item.display;
 	//
+	this.setText(this.pop_display);
 	this.stop();
 	this.setPosition(this.pop_map_position);
 	this.show();
@@ -50,6 +54,7 @@ ScrollTextOverlay.prototype.draw = function(){
 		return;
 	}
 	//comment:当地放大地图时,你的自定义覆盖物display会变成none
+	this.setText(this.pop_display);
 	this.stop();
 	this.setPosition(this.pop_map_position);
 	this.show();  
@@ -82,6 +87,10 @@ ScrollTextOverlay.prototype.stop = function(){
 ScrollTextOverlay.prototype.setPosition = function(mapPoint){
 	// 根据地理坐标转换为像素坐标，并设置给容器 
 	var position = this._map.pointToOverlayPixel(mapPoint);
+	if (!position || !position.x) {
+		console.log(position);
+		console.log(mapPoint);
+	};
 	this._div.style.left = position.x - this.pop_width / 2 + "px";  
 	this._div.style.top = position.y - this.pop_height - this.pop_arrowHeight  + "px";  
 }
@@ -93,6 +102,8 @@ ScrollTextOverlay.prototype.isDisplay = function(point){
 
 //@comment 设置显示文字
 ScrollTextOverlay.prototype.setText = function(text){
-	Scroll.prototype.setContent(text);
+	if (text) {
+		this._scroll.setContent(text);
+	}
 }
 

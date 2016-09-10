@@ -313,7 +313,7 @@
                             addMarker();
                         }
                         //markerArr = json_parse(rs);//[];
-
+                        renderPop(arrayobjectback);
                     }
                 } catch (e) {
                     alert(e.message);
@@ -436,6 +436,7 @@
                         //添加服务区信息
                         $("#serverpart_contain").html("").append(serverpartcontent);
                         $("#serverpart_contain").css('display','block');
+                        g_DOMHandler.serverpart_contain.style.height = (window.innerHeight * 0.9 - g_DOMHandler.serverpart_contain.offsetTop) + 'px'
                         $('.entrylist li').mouseover(function () {
                             $(this).css("backgroundColor", "#7A8B8B");
                         })
@@ -942,6 +943,7 @@
             var viewHeight = window.innerHeight;
             g_sideBar.setExpend(true);
             g_DOMHandler.formSideBar.style.height = viewHeight * 0.9 + 'px';
+            g_DOMHandler.serverpart_contain.style.height = (viewHeight * 0.9 - g_DOMHandler.serverpart_contain.offsetTop) + 'px'
         }
 
         //更新搜索内容
@@ -968,6 +970,7 @@
         function renderPop(arrayobjectback){
             var pop_points = [];
             //有新的绘制需求后 将句柄置空来停止轮询
+            clearInterval(g_pop_timeHandler);
             g_pop_timeHandler = null;
             //如果只有一个服务站将不显示气泡
             if (arrayobjectback.length == 1) {
@@ -975,6 +978,10 @@
             }
 
             for (var num = 0; num < arrayobjectback.length; num++) {
+                var map_item = {
+                    display:null,
+                    point:null
+                }
                 markerArr = [JSON.stringify(arrayobjectback[num])];
                 var json = markerArr[0];
                 json = eval('(' + json + ')');
@@ -982,18 +989,25 @@
                 var p1 = json.point.split("|")[1];
                 var imagepath = json.imagepath;
                 var point = new BMap.Point(p0, p1);
-                pop_points.push(point);
+                map_item.point = point;
+                map_item.display = json.content;
+                pop_points.push(map_item);
             }
-            var min = 0,max = arrayobjectback.length;
+            var min = 0,max = arrayobjectback.length-1;
+            var last_displayIndex = null;
             var callBack = function(){
-                var displayIndex = Math.floor(Math.random()*(max-min+1)+min);
-                g_pop.switchDraw(pop_points[displayIndex]);
-                //句柄未置空 继续执行延迟函数
-                if (g_pop_timeHandler !== null) {
-                    g_pop_timeHandler = setTimeout(callBack,15000);
+                var displayIndex = Math.floor(Math.random()*(max-min+1)+min);;
+                if (last_displayIndex == displayIndex) {
+                    displayIndex = (displayIndex + 1) < max ? (displayIndex + 1) : (displayIndex - 1);
                 }
+                g_pop.switchDraw(pop_points[displayIndex]);
+                last_displayIndex = displayIndex;
+                //句柄未置空 继续执行延迟函数
+                // if (g_pop_timeHandler !== null) {
+                //     g_pop_timeHandler = setTimeout(callBack,5000);
+                // }
             };
-            g_pop_timeHandler = setTimeout(callBack,2000);
+            g_pop_timeHandler = setInterval(callBack,5000);
         }
         //Event
         function stopBubble(e) { 
@@ -1077,10 +1091,11 @@
                 }); 
             });
             //set height
+            var search_height = 40;
              $('#' + container).css('height','auto');
             var viewHeight = window.innerHeight;
             var height =  $('#' + container).height();
-            height = height < viewHeight * 0.9 ? height : viewHeight * 0.9;
+            height = height < (viewHeight * 0.9 - search_height) ? height : (viewHeight * 0.9 - search_height);
             $('#' + container).css('height',height + 'px');
             //render
             if (animation) {
@@ -1156,7 +1171,7 @@
             g_DOMHandler.body = document.getElementsByTagName('body')[0];
             g_DOMHandler.formSideBar = document.getElementById('Form_SideBar');
             g_DOMHandler.listContainer = document.getElementById('list_container');
-
+            g_DOMHandler.serverpart_contain = document.getElementById('serverpart_contain');
             //search container
             g_DOMHandler.searchContainer = document.getElementById('search_container');
             g_DOMHandler.input = document.getElementById('search');
@@ -1171,11 +1186,10 @@
             g_DOMHandler.input.addEventListener('keydown',function(event){
                 if (event.keyCode === 13) {
                     getServerData();
+                    g_DOMHandler.toastWrapper.innerHTML = "";
+                    stopBubble(event);
+                    stopDefault(event);
                 }
-                g_DOMHandler.toastWrapper.innerHTML = "";
-                stopBubble(event);
-                stopDefault(event);
-                
             },false);
             //TODO:remove jquery method
             $("#search").bind('input propertychange',function(){

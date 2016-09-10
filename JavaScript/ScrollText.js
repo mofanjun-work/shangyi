@@ -12,12 +12,12 @@ var g_html_fragment = {
 }
 
 
-function Scroll(text){
+function Scroll(){
     var scroll = document.getElementById('ys_scroll');
     var container = document.getElementById('ys_scroll_container'); 
     var tpl = document.getElementById('yp_text');
+    this.scrollWidth = container.offsetWidth;
     this.element = scroll;
-    this.scrollWidth = tpl.offsetWidth;
 }  
     
 Scroll.prototype.run = function(){
@@ -43,4 +43,7 @@ Scroll.prototype.setContent = function(text){
     var tpl_copy = document.getElementById('yp_text_copy');
     tpl.innerHTML = text;
     tpl_copy.innerHTML = text;
+    //还原内容的起始坐标
+    this.scrollWidth = tpl.offsetWidth;
+    this.element.scrollLeft = 0;
 }
