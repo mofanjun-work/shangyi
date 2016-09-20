@@ -25,6 +25,7 @@
         {
             $(".serverpart_nav").remove();
         }
+        //3级菜单并渲染
         function getSSubNav(e, obj)
         {
             //1.判断对应的菜单存在否  2.加载对应的数据  3.绑定对应的菜单
@@ -130,7 +131,7 @@
 
         }
 
-        //TODO:2级菜单的下一级菜单
+        //请求2级菜单数据并渲染
         function getSubMenu(e, Num) {
             //呈现展开
             if (Num == 'all') {
@@ -221,7 +222,7 @@
                 }
             });
         }
-
+        //获得对应的服务区并打点
         function getServerPartAndPoint(e) {
             //加载服务区
             $("#serverpart_contain").html("").append(img_div_object);
@@ -322,7 +323,7 @@
         }
 
 
-
+        //1级菜单并渲染
         function getMainNav(){
             //初始化对应的选项
             // var navString = '<%=GetTypeString%>';
@@ -505,6 +506,8 @@
             + "</div>"
             + "<b>[ServerName]</b><br /><br /><br/>[IMAGEPATH]"
         + "</div>";
+
+        //初始化百度地图入口函数
         function InitMap() {
             //创建地图
             CreateBaiduMap();
@@ -648,7 +651,7 @@
                 })()
             }
         }
-
+        //显示打后的点
         function createInfoWindow(i) {
             RealEstate.Page.ShowMask('正在查询...');
             var json = i;// markerArr[i];
@@ -715,7 +718,7 @@
             });
         })
 
-        //点击的时候，将点击的按钮，变换成红色
+        //点击的时候，将点击的mark，变换成红色
         function RetSetMapPoint(pointX, pointY) {
             //设置中心点
             //map_step5:
@@ -820,7 +823,7 @@
             }
 
         }
-
+        //居中某个点
         function SetBackPoint(obj)
         {
             if (obj == null || obj == "") {
@@ -859,6 +862,7 @@
             });
             return retString;
         }
+        //获取infoWindow的左边图片
         function getimageDataAsyn(ecode) {
             var retString = "";
             var data = [];
