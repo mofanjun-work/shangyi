@@ -1,0 +1,201 @@
+﻿
+.Body_SizeBox .Form_Banner {
+    /*text-align: center;*/
+    /*-webkit-box-shadow: 0px 1px 10px #a9a9a9;
+    box-shadow: 0px 1px 0px #a9a9a9;*/
+    margin-bottom: 0px;
+    /*-webkit-box-shadow: 0 1px 3px #a9a9a9;
+    -moz-box-shadow: 0 1px 3px #a9a9a9;
+    box-shadow: 0 1px 3px #a9a9a9;*/
+}
+
+.Body_SizeBox .Form_SideBar {
+    background-color: #ededed;
+    width: auto;
+    overflow: initial;
+    -webkit-box-shadow: inset -1px 0 0px #a9a9a9, 0 0 0px #a9a9a9, 0 0 0px #a9a9a9,0px 0 0px #a9a9a9;
+    -moz-box-shadow: inset -1px 0 0px #a9a9a9, 0 0 0px #a9a9a9, 0 0 0px #a9a9a9,0px 0 0px #a9a9a9;
+    box-shadow: inset -1px 0 0px #a9a9a9, 0 0 0px #a9a9a9, 0 0 0px #a9a9a9,0px 0 0px #a9a9a9;
+}
+
+
+
+    .Body_SizeBox .Form_SideBar .Form_SideBar_Center {
+        padding: 10px 0px 0px 10px;
+    }
+
+.Body_SizeBox .Form_Middle {
+    background-color: #fff;
+}
+
+    /*.Body_SizeBox .Form_Middle .Form_Middle_Center {
+        padding: 0px;
+    }*/
+
+ul.ComponentList {
+    cursor: default;
+    width: 100%;
+    text-align: right;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+    ul.ComponentList > li {
+        line-height: 1.5em;
+        height: 1.5em;
+        cursor: pointer;
+        border: solid 1px transparent;
+        padding: 5px 8px 5px 10px;
+    }
+
+        ul.ComponentList > li.ComponentSelected {
+            background-color: #fff;
+            border-right: solid 1px #fff;
+            color: #ff6a00;
+            border-bottom-left-radius: 5px;
+            border-top-left-radius: 5px;
+            -webkit-box-shadow: -1px 0 0px #a9a9a9, 0 -1px 0px #a9a9a9, 0 1px 0px #a9a9a9,0px 0 0px #a9a9a9;
+            -moz-box-shadow: -1px 0 0px #a9a9a9, 0 -1px 0px #a9a9a9, 0 1px 0px #a9a9a9,0px 0 0px #a9a9a9;
+            box-shadow: -1px 0 0px #a9a9a9, 0 -1px 0px #a9a9a9, 0 1px 0px #a9a9a9,0px 0 0px #a9a9a9;
+        }
+
+        ul.ComponentList > li:hover {
+            color: #ff6a00;
+        }
+
+.Body_SizeBox .Form_SplitBar {
+    display: none;
+}
+
+div.PanelComponent {
+    max-width: 100%;
+    /*min-width: 700px;*/
+    text-align: left;
+    background-color: #fff;
+    padding: 8px 0px 20px 0px;
+}
+
+div.ComponentBox {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    float: left;
+    width: 100%;
+    padding: 0px 25px;
+    background-color: #fff;
+}
+
+    div.ComponentBox > div.ComponentToolBar {
+        margin: 8px 0px;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    div.ComponentBox > div.ComponentContent {
+        padding-bottom: 8px;
+        border-bottom: #ced0d5 solid 1px;
+        width: 100%;
+        float: left;
+    }
+
+    div.ComponentBox:last-child div.ComponentContent {
+        border-bottom: #ced0d5 solid 0px;
+    }
+
+    /*div.ComponentBox:nth-child(2n+1) div.ComponentToolBar {
+    background-color: #f1f1f1;
+    background-color:#fdfcfc;
+}*/
+
+
+
+    div.ComponentBox > div.ComponentToolBar input {
+        float: right;
+        background: none;
+        border: #ced0d5 1px solid;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        margin-top: 0px !important;
+        margin-left: 10px !important;
+        color: #ff6a00;
+    }
+
+    div.ComponentBox > div.ComponentToolBar > span {
+        font-weight: 800;
+        font-size: 12pt;
+        cursor: pointer;
+        height: 30px;
+        line-height: 30px;
+        white-space: nowrap;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+
+
+
+div.WorkFlowDialogMark {
+    display: none;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 101;
+    background-color: #000;
+    filter: Alpha(Opacity=55);
+    opacity: 0.55;
+    top: 0px;
+    left: 0px;
+}
+
+div.WorkFlowDialogTable {
+    display: none;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 102;
+    top: 0px;
+    left: 0px;
+}
+
+div.WorkFlowDialogCell {
+    vertical-align: middle;
+    display: table-cell;
+}
+
+div.WorkFlowDialogBox {
+    display: none;
+    /*top: 40%;*/
+    padding: 30px 20px 20px 20px;
+    /*background-color: #ededed;*/
+    background-color: #fff;
+    width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+    div.WorkFlowDialogBox > div {
+        left: 50%;
+        width: 400px;
+        margin-left: -150px;
+        position: relative;
+        text-align: left;
+        line-height: 30px;
+    }
+
+        div.WorkFlowDialogBox > div.ToolBar {
+            padding: 20px 0px 10px 0px;
+            text-align: right;
+            margin-left: -50px;
+            width: 200px;
+        }
