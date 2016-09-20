@@ -931,6 +931,8 @@
                 this.expend = bExpend;
             }
         };
+
+        //收缩sidebar控件
         function floatSideBar(){
             var top = g_DOMHandler.searchContainer.offsetTop;
             var height = g_DOMHandler.searchContainer.offsetHeight;
@@ -938,7 +940,7 @@
             g_DOMHandler.input.blur();
             g_DOMHandler.formSideBar.style.height = top + height + 'px';
         }
-
+        //扩展sidebar控件
         function expendSideBar(){
             var viewHeight = window.innerHeight;
             g_sideBar.setExpend(true);
@@ -956,7 +958,7 @@
             var innerHTML = simpleTemplate.template(g_htmlTemplate.toast_wrapper,items);
             g_DOMHandler.toastWrapper.innerHTML = innerHTML;
         }
-
+        //在地图上打点
         function pointMap(rs){
             var arrayobjectback =  eval('(' + "["+rs + "]"+')');
             for (var num = 0; num < arrayobjectback.length; num++) {
@@ -1183,14 +1185,7 @@
                 showContainer('list_container');
             },false);
 
-            g_DOMHandler.input.addEventListener('keydown',function(event){
-                if (event.keyCode === 13) {
-                    getServerData();
-                    g_DOMHandler.toastWrapper.innerHTML = "";
-                    stopBubble(event);
-                    stopDefault(event);
-                }
-            },false);
+
             //TODO:remove jquery method
             $("#search").bind('input propertychange',function(){
                 var value = g_DOMHandler.input.value;
@@ -1216,7 +1211,7 @@
                 }
                 g_sideBar.click = false;
             },false);
-
+            //搜索按钮
             g_DOMHandler.btnSearch.addEventListener('click',function(event){
                 getServerData();
                 g_DOMHandler.toastWrapper.innerHTML = "";
@@ -1224,7 +1219,16 @@
                 stopDefault(event);
 
             },false);
-
+            //回车按钮
+            g_DOMHandler.input.addEventListener('keydown',function(event){
+                if (event.keyCode === 13) {
+                    getServerData();
+                    g_DOMHandler.toastWrapper.innerHTML = "";
+                    stopBubble(event);
+                    stopDefault(event);
+                }
+            },false);
+            //清除文字按钮
             g_DOMHandler.btnClear.addEventListener('click',function(event){
                 //置空input让 搜索栏消失
                 g_DOMHandler.input.value = "";
@@ -1232,7 +1236,7 @@
                 stopBubble(event);
                 stopDefault(event);
             },false);
-
+            //清除按钮
             g_DOMHandler.toastWrapper.addEventListener('click',function(event){
                 g_DOMHandler.toastWrapper.innerHTML = "";
                 var key = event.target.innerText;
